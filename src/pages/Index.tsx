@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Copy, Check } from "lucide-react";
 
 interface AndroidElement {
   class: string;
@@ -116,6 +116,7 @@ const Index = () => {
                     <Detail label="Texto" value={el.text || "—"} />
                     <Detail label="Descrição" value={el.description || "—"} />
                     <Detail label="Bounds" value={el.bounds} />
+                    <CopyButton el={el} />
                   </div>
                 }
               </li>);
@@ -133,5 +134,21 @@ const Detail = ({ label, value }: {label: string;value: string;}) =>
     <span className="text-card-foreground break-all">{value}</span>
   </div>;
 
+const CopyButton = ({ el }: { el: AndroidElement }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    const text = `Classe: ${el.class}\nID: ${el.id || "—"}\nTexto: ${el.text || "—"}\nDescrição: ${el.description || "—"}\nBounds: ${el.bounds}`;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  };
+  return (
+    <button onClick={handleCopy} className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
+      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+      {copied ? "Copiado!" : "Copiar"}
+    </button>
+  );
+};
 
 export default Index;

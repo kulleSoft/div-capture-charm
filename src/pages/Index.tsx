@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal } from "lucide-react";
+import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Plus, X, Code } from "lucide-react";
 
 interface AndroidElement {
   class: string;
@@ -9,7 +9,7 @@ interface AndroidElement {
   bounds: string;
 }
 
-const elements: AndroidElement[] = [
+const defaultElements: AndroidElement[] = [
   { class: "android.widget.TextView", id: "", text: "teste", description: "", bounds: "[24,57][91,98]" },
   { class: "android.widget.EditText", id: "com.kulle:id/edit", text: "senha", description: "", bounds: "[233,380][306,429]" },
   { class: "android.widget.Button", id: "com.kulle:id/btn", text: "PRESSIONE", description: "", bounds: "[204,429][336,501]" },
@@ -34,18 +34,87 @@ const getIcon = (type: string) => {
   }
 };
 
+const exampleJson = `[{"class":"android.widget.Button","id":"com.app:id/ok","text":"OK","description":"","bounds":"[0,0][100,50]"}]`;
+
 const Index = () => {
+  const [elements, setElements] = useState<AndroidElement[]>(defaultElements);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
+  const [showJsonInput, setShowJsonInput] = useState(false);
+  const [jsonText, setJsonText] = useState("");
+  const [error, setError] = useState("");
 
   const toggle = (i: number) =>
     setExpanded((prev) => ({ ...prev, [i]: !prev[i] }));
 
+  const handleAddJson = () => {
+    setError("");
+    try {
+      const parsed = JSON.parse(jsonText);
+      const arr = Array.isArray(parsed) ? parsed : [parsed];
+      const valid = arr.every(
+        (el: any) => typeof el.class === "string" && typeof el.bounds === "string"
+      );
+      if (!valid) {
+        setError("Cada item precisa ter pelo menos 'class' e 'bounds'.");
+        return;
+      }
+      const normalized: AndroidElement[] = arr.map((el: any) => ({
+        class: String(el.class || ""),
+        id: String(el.id || ""),
+        text: String(el.text || ""),
+        description: String(el.description || ""),
+        bounds: String(el.bounds || ""),
+      }));
+      setElements((prev) => [...prev, ...normalized]);
+      setJsonText("");
+      setShowJsonInput(false);
+    } catch {
+      setError("JSON inválido. Verifique a formatação.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background p-4 sm:p-8">
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-6 text-2xl font-bold text-foreground">
-          Elementos Android
-        </h1>
+        <div className="mb-6 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-foreground">
+            Elementos Android
+          </h1>
+          <button
+            onClick={() => setShowJsonInput((v) => !v)}
+            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {showJsonInput ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            {showJsonInput ? "Fechar" : "Adicionar JSON"}
+          </button>
+        </div>
+
+        {showJsonInput && (
+          <div className="mb-6 rounded-lg border bg-card p-4 shadow-sm animate-accordion-down">
+            <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
+              <Code className="w-4 h-4" />
+              Cole o JSON dos elementos abaixo
+            </div>
+            <textarea
+              value={jsonText}
+              onChange={(e) => { setJsonText(e.target.value); setError(""); }}
+              placeholder={exampleJson}
+              rows={5}
+              className="w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring font-mono"
+            />
+            {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
+            <button
+              onClick={handleAddJson}
+              disabled={!jsonText.trim()}
+              className="mt-3 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Carregar na Lista
+            </button>
+          </div>
+        )}
+
+        <p className="mb-3 text-sm text-muted-foreground">{elements.length} elemento(s)</p>
+
         <ul className="space-y-3">
           {elements.map((el, i) => {
             const type = getWidgetType(el.class);

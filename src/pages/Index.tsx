@@ -125,7 +125,7 @@ const Index = () => {
                     <p className="text-sm text-muted-foreground">{type}</p>
                   </div>
                   <button
-                    onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar posição: ${el.position}`); }}
+                    onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar posição@@ ${el.position}`); }}
                     className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                   >
                     Visualizar
@@ -185,10 +185,10 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => {
     <div className="flex items-center gap-2">
       <span className="font-medium text-muted-foreground w-20 shrink-0">{label}</span>
       <span className="text-card-foreground break-all flex-1">{value}</span>
-      <button onClick={() => console.log(`🔧 Usar: ${label} = ${value}`)} className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+      <button onClick={() => console.log(`🔧 Usar@@ ${label} = ${value}`)} className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
         Usar
       </button>
-      <button onClick={() => { console.log(`📋 Copiar: ${label} = ${value}`); handleCopy(); }} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+      <button onClick={() => { console.log(`📋 Copiar@@ ${label} = ${value}`); handleCopy(); }} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
         {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
       </button>
     </div>

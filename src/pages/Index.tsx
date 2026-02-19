@@ -135,13 +135,30 @@ const Index = () => {
 
 };
 
+const fallbackCopy = (text: string, onSuccess: () => void) => {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand("copy"); onSuccess(); } catch { /* ignore */ }
+  document.body.removeChild(ta);
+};
+
 const DetailRow = ({ label, value }: { label: string; value: string }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
-    navigator.clipboard.writeText(value).then(() => {
+    const onSuccess = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    });
+    };
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(value).then(onSuccess).catch(() => fallbackCopy(value, onSuccess));
+    } else {
+      fallbackCopy(value, onSuccess);
+    }
   };
   return (
     <div className="flex items-center gap-2">

@@ -125,7 +125,7 @@ const Index = () => {
                     <p className="text-sm text-muted-foreground">{type}</p>
                   </div>
                   <button
-                    onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar: ${type} = ${el.text || el.id || el.class}`); }}
+                    onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar posição: ${el.position}`); }}
                     className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                   >
                     Visualizar

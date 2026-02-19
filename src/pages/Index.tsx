@@ -112,6 +112,12 @@ const Index = () => {
                     </p>
                     <p className="text-sm text-muted-foreground">{type}</p>
                   </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar: ${type} = ${el.text || el.id || el.class}`); }}
+                    className="flex h-7 shrink-0 items-center px-2 rounded-md text-xs font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                  >
+                    Visualizar
+                  </button>
                   <span className="text-muted-foreground">
                     {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                   </span>

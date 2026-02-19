@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Copy, Check } from "lucide-react";
+import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Copy, Check, Eye, Play } from "lucide-react";
 
 interface AndroidElement {
   class: string;
@@ -164,7 +164,13 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => {
     <div className="flex items-center gap-2">
       <span className="font-medium text-muted-foreground w-20 shrink-0">{label}</span>
       <span className="text-card-foreground break-all flex-1">{value}</span>
-      <button onClick={handleCopy} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+      <button onClick={() => console.log(`👁 Visualizar: ${label} = ${value}`)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+        <Eye className="w-3.5 h-3.5" />
+      </button>
+      <button onClick={() => console.log(`🔧 Usar: ${label} = ${value}`)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+        <Play className="w-3.5 h-3.5" />
+      </button>
+      <button onClick={() => { console.log(`📋 Copiar: ${label} = ${value}`); handleCopy(); }} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
         {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
       </button>
     </div>

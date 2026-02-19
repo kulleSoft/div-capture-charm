@@ -104,7 +104,6 @@ const Index = () => {
                     </p>
                     <p className="text-sm text-muted-foreground">{type}</p>
                   </div>
-                  <CopyButton el={el} />
                   <span className="text-muted-foreground">
                     {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                   </span>
@@ -112,11 +111,11 @@ const Index = () => {
 
                 {isOpen &&
                 <div className="border-t px-4 py-3 text-sm space-y-2 bg-muted/40 rounded-b-lg animate-accordion-down">
-                    <Detail label="Classe" value={el.class} />
-                    <Detail label="ID" value={el.id || "—"} />
-                    <Detail label="Texto" value={el.text || "—"} />
-                    <Detail label="Descrição" value={el.description || "—"} />
-                    <Detail label="Bounds" value={el.bounds} />
+                    <DetailRow label="Classe" value={el.class} />
+                    <DetailRow label="ID" value={el.id || "—"} />
+                    <DetailRow label="Texto" value={el.text || "—"} />
+                    <DetailRow label="Descrição" value={el.description || "—"} />
+                    <DetailRow label="Bounds" value={el.bounds} />
                   </div>
                 }
               </li>);
@@ -128,25 +127,22 @@ const Index = () => {
 
 };
 
-const Detail = ({ label, value }: {label: string;value: string;}) =>
-<div className="flex gap-2">
-    <span className="font-medium text-muted-foreground w-20 shrink-0">{label}</span>
-    <span className="text-card-foreground break-all">{value}</span>
-  </div>;
-
-const CopyButton = ({ el }: { el: AndroidElement }) => {
+const DetailRow = ({ label, value }: { label: string; value: string }) => {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
-    const text = `Classe: ${el.class}\nID: ${el.id || "—"}\nTexto: ${el.text || "—"}\nDescrição: ${el.description || "—"}\nBounds: ${el.bounds}`;
-    navigator.clipboard.writeText(text).then(() => {
+    navigator.clipboard.writeText(value).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
   };
   return (
-    <button onClick={(e) => { e.stopPropagation(); handleCopy(); }} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
-      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-    </button>
+    <div className="flex items-center gap-2">
+      <span className="font-medium text-muted-foreground w-20 shrink-0">{label}</span>
+      <span className="text-card-foreground break-all flex-1">{value}</span>
+      <button onClick={handleCopy} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+        {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+      </button>
+    </div>
   );
 };
 

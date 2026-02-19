@@ -6,17 +6,26 @@ interface AndroidElement {
   id: string;
   text: string;
   description: string;
-  bounds: string;
+  position: string;
+  clickable: boolean;
+  editable: boolean;
+  checkable: boolean;
 }
 
 const defaultElements: AndroidElement[] = [
-{ class: "android.widget.TextView", id: "", text: "teste", description: "", bounds: "[24,57][91,98]" },
-{ class: "android.widget.EditText", id: "com.kulle:id/edit", text: "senha", description: "", bounds: "[233,380][306,429]" },
-{ class: "android.widget.Button", id: "com.kulle:id/btn", text: "PRESSIONE", description: "", bounds: "[204,429][336,501]" },
-{ class: "android.widget.TextView", id: "com.kulle:id/text", text: "Brasil é nosso 2026", description: "", bounds: "[181,501][359,550]" },
-{ class: "android.widget.CheckBox", id: "com.kulle:id/checkbox", text: "marcar", description: "", bounds: "[205,550][334,599]" },
-{ class: "android.widget.Switch", id: "com.kulle:id/switch1", text: "Switch", description: "", bounds: "[196,599][344,648]" },
-{ class: "android.widget.SeekBar", id: "com.kulle:id/seekbar1", text: "", description: "", bounds: "[12,648][528,699]" }];
+{ class: "android.view.ViewGroup", id: "decor_content_parent", text: "", description: "", position: "270:480", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.FrameLayout", id: "action_bar_container", text: "", description: "", position: "270:78", clickable: false, editable: false, checkable: false },
+{ class: "android.view.ViewGroup", id: "action_bar", text: "", description: "", position: "270:78", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.TextView", id: "", text: "teste", description: "", position: "57:77", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.FrameLayout", id: "content", text: "", description: "", position: "270:540", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.LinearLayout", id: "linear1", text: "", description: "", position: "270:540", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.EditText", id: "edit", text: "senha", description: "", position: "269:404", clickable: true, editable: true, checkable: false },
+{ class: "android.widget.Button", id: "btn", text: "PRESSIONE", description: "", position: "270:465", clickable: true, editable: false, checkable: false },
+{ class: "android.widget.TextView", id: "text", text: "Brasil é nosso 2026", description: "", position: "270:525", clickable: false, editable: false, checkable: false },
+{ class: "android.widget.CheckBox", id: "checkbox", text: "marcar", description: "", position: "269:574", clickable: true, editable: false, checkable: true },
+{ class: "android.widget.Switch", id: "switch1", text: "Switch", description: "", position: "270:623", clickable: true, editable: false, checkable: true },
+{ class: "android.widget.SeekBar", id: "seekbar1", text: "", description: "", position: "270:673", clickable: false, editable: false, checkable: false },
+{ class: "android.view.View", id: "statusBarBackground", text: "", description: "", position: "270:18", clickable: false, editable: false, checkable: false }];
 
 
 const getWidgetType = (className: string) => className.split(".").pop() || className;
@@ -34,7 +43,7 @@ const getIcon = (type: string) => {
   }
 };
 
-const exampleJson = `[{"class":"android.widget.Button","id":"com.app:id/ok","text":"OK","description":"","bounds":"[0,0][100,50]"}]`;
+const exampleJson = `[{"class":"android.widget.Button","id":"btn","text":"OK","description":"","position":"100:200","clickable":true,"editable":false,"checkable":false}]`;
 
 const Index = () => {
   const [elements, setElements] = useState<AndroidElement[]>(defaultElements);
@@ -49,10 +58,10 @@ const Index = () => {
       try {
         const arr = Array.isArray(data) ? data : [data];
         const valid = arr.every(
-          (el: any) => typeof el.class === "string" && typeof el.bounds === "string"
+          (el: any) => typeof el.class === "string" && typeof el.position === "string"
         );
         if (!valid) {
-          console.error("Cada item precisa ter pelo menos 'class' e 'bounds'.");
+          console.error("Cada item precisa ter pelo menos 'class' e 'position'.");
           return;
         }
         const normalized: AndroidElement[] = arr.map((el: any) => ({
@@ -60,7 +69,10 @@ const Index = () => {
           id: String(el.id || ""),
           text: String(el.text || ""),
           description: String(el.description || ""),
-          bounds: String(el.bounds || "")
+          position: String(el.position || ""),
+          clickable: Boolean(el.clickable),
+          editable: Boolean(el.editable),
+          checkable: Boolean(el.checkable)
         }));
         setElements((prev) => [...prev, ...normalized]);
         console.log(`✅ ${normalized.length} elemento(s) adicionado(s)`);
@@ -73,7 +85,7 @@ const Index = () => {
       console.log("✅ Lista limpa");
     };
     console.log("🔧 Comandos disponíveis:");
-    console.log("  addElements([{class, id, text, description, bounds}])");
+    console.log("  addElements([{class, id, text, description, position, clickable, editable, checkable}])");
     console.log("  clearElements()");
   });
 
@@ -129,7 +141,10 @@ const Index = () => {
                     <DetailRow label="ID" value={el.id || "—"} />
                     <DetailRow label="Texto" value={el.text || "—"} />
                     <DetailRow label="Descrição" value={el.description || "—"} />
-                    <DetailRow label="Bounds" value={el.bounds} />
+                    <DetailRow label="Posição" value={el.position} />
+                    <DetailRow label="Clicável" value={el.clickable ? "Sim" : "Não"} />
+                    <DetailRow label="Editável" value={el.editable ? "Sim" : "Não"} />
+                    <DetailRow label="Marcável" value={el.checkable ? "Sim" : "Não"} />
                   </div>
                 }
               </li>);

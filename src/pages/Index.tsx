@@ -114,7 +114,7 @@ const Index = () => {
                   </div>
                   <button
                     onClick={(e) => { e.stopPropagation(); console.log(`👁 Visualizar: ${type} = ${el.text || el.id || el.class}`); }}
-                    className="flex h-7 shrink-0 items-center px-2 rounded-md text-xs font-medium text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                    className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
                   >
                     Visualizar
                   </button>

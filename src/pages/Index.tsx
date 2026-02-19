@@ -104,6 +104,7 @@ const Index = () => {
                     </p>
                     <p className="text-sm text-muted-foreground">{type}</p>
                   </div>
+                  <CopyButton el={el} />
                   <span className="text-muted-foreground">
                     {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                   </span>
@@ -116,7 +117,6 @@ const Index = () => {
                     <Detail label="Texto" value={el.text || "—"} />
                     <Detail label="Descrição" value={el.description || "—"} />
                     <Detail label="Bounds" value={el.bounds} />
-                    <CopyButton el={el} />
                   </div>
                 }
               </li>);
@@ -144,9 +144,8 @@ const CopyButton = ({ el }: { el: AndroidElement }) => {
     });
   };
   return (
-    <button onClick={handleCopy} className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
+    <button onClick={(e) => { e.stopPropagation(); handleCopy(); }} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-      {copied ? "Copiado!" : "Copiar"}
     </button>
   );
 };

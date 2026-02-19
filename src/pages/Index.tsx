@@ -83,7 +83,15 @@ const Index = () => {
         
 
 
-        <p className="mb-3 text-sm text-muted-foreground">{elements.length} elemento(s)</p>
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-sm text-muted-foreground">{elements.length} elemento(s)</p>
+          <button
+            onClick={() => console.log("🔄 Botão Atualizar UI pressionado")}
+            className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+          >
+            Atualizar UI
+          </button>
+        </div>
 
         <ul className="space-y-3">
           {elements.map((el, i) => {

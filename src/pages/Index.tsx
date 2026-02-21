@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Copy, Check, Eye, Play } from "lucide-react";
+import { ChevronDown, ChevronUp, Type, KeyRound, MousePointerClick, CheckSquare, ToggleLeft, SlidersHorizontal, Copy, Check, Eye, Play, Search } from "lucide-react";
 
 interface AndroidElement {
   class: string;
@@ -48,6 +48,7 @@ const exampleJson = `[{"class":"android.widget.Button","id":"btn","text":"OK","d
 const Index = () => {
   const [elements, setElements] = useState<AndroidElement[]>(defaultElements);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
+  const [search, setSearch] = useState("");
 
   const toggle = (i: number) =>
   setExpanded((prev) => ({ ...prev, [i]: !prev[i] }));
@@ -95,8 +96,18 @@ const Index = () => {
         
 
 
+        <div className="relative mb-3">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Buscar por texto, ID ou descrição..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+        </div>
+
         <div className="flex items-center justify-between mb-3">
-          
           <button
             onClick={() => console.log("🔄 Botão Atualizar UI pressionado")}
             className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -106,7 +117,11 @@ const Index = () => {
         </div>
 
         <ul className="space-y-3">
-          {elements.map((el, i) => {
+          {elements.filter((el) => {
+            if (!search.trim()) return true;
+            const q = search.toLowerCase();
+            return el.text.toLowerCase().includes(q) || el.id.toLowerCase().includes(q) || el.description.toLowerCase().includes(q);
+          }).map((el, i) => {
             const type = getWidgetType(el.class);
             const isOpen = !!expanded[i];
             return (

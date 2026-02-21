@@ -49,6 +49,7 @@ const Index = () => {
   const [elements, setElements] = useState<AndroidElement[]>(defaultElements);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
   const [search, setSearch] = useState("");
+  const [packageName, setPackageName] = useState("com.exemplo");
 
   const toggle = (i: number) =>
   setExpanded((prev) => ({ ...prev, [i]: !prev[i] }));
@@ -85,9 +86,14 @@ const Index = () => {
       setElements([]);
       console.log("✅ Lista limpa");
     };
+    (window as any).setPackage = (name: string) => {
+      setPackageName(String(name));
+      console.log(`✅ Pacote definido: ${name}`);
+    };
     console.log("🔧 Comandos disponíveis:");
     console.log("  addElements([{class, id, text, description, position, clickable, editable, checkable}])");
     console.log("  clearElements()");
+    console.log("  setPackage('com.exemplo.app')");
   });
 
   return (
@@ -114,6 +120,10 @@ const Index = () => {
           >
             Atualizar UI
           </button>
+        </div>
+
+        <div className="mb-3 rounded-lg border bg-card px-4 py-3 shadow-sm">
+          <p className="text-sm text-muted-foreground">Pacote app: <span className="font-semibold text-card-foreground">{packageName}</span></p>
         </div>
 
         <ul className="space-y-3">

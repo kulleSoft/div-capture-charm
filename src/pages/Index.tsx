@@ -120,7 +120,8 @@ const Index = () => {
           {elements.filter((el) => {
             if (!search.trim()) return true;
             const q = search.toLowerCase();
-            return el.text.toLowerCase().includes(q) || el.id.toLowerCase().includes(q) || el.description.toLowerCase().includes(q);
+            const type = getWidgetType(el.class).toLowerCase();
+            return el.text.toLowerCase().includes(q) || el.id.toLowerCase().includes(q) || el.description.toLowerCase().includes(q) || type.includes(q);
           }).map((el, i) => {
             const type = getWidgetType(el.class);
             const isOpen = !!expanded[i];

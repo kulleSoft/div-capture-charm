@@ -122,9 +122,7 @@ const Index = () => {
           </button>
         </div>
 
-        <div className="mb-3 rounded-lg border bg-card px-4 py-3 shadow-sm">
-          <p className="text-sm text-muted-foreground">Pacote app: <span className="font-semibold text-card-foreground">{packageName}</span></p>
-        </div>
+        <PackageCard packageName={packageName} />
 
         <ul className="space-y-3">
           {elements.filter((el) => {
@@ -192,6 +190,29 @@ const fallbackCopy = (text: string, onSuccess: () => void) => {
   ta.select();
   try { document.execCommand("copy"); onSuccess(); } catch { /* ignore */ }
   document.body.removeChild(ta);
+};
+
+const PackageCard = ({ packageName }: { packageName: string }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    const onSuccess = () => { setCopied(true); setTimeout(() => setCopied(false), 1500); };
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(packageName).then(onSuccess).catch(() => fallbackCopy(packageName, onSuccess));
+    } else {
+      fallbackCopy(packageName, onSuccess);
+    }
+  };
+  return (
+    <div className="mb-3 rounded-lg border bg-card px-4 py-3 shadow-sm flex items-center gap-2">
+      <p className="text-sm text-muted-foreground flex-1">Pacote app: <span className="font-semibold text-card-foreground">{packageName}</span></p>
+      <button onClick={() => console.log(`🔧 Usar@@ Pacote = ${packageName}`)} className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+        Usar
+      </button>
+      <button onClick={() => { console.log(`📋 Copiar@@ Pacote = ${packageName}`); handleCopy(); }} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors">
+        {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+      </button>
+    </div>
+  );
 };
 
 const DetailRow = ({ label, value }: { label: string; value: string }) => {

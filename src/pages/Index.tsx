@@ -12,20 +12,7 @@ interface AndroidElement {
   checkable: boolean;
 }
 
-const defaultElements: AndroidElement[] = [
-{ class: "android.view.ViewGroup", id: "decor_content_parent", text: "", description: "", position: "270:480", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.FrameLayout", id: "action_bar_container", text: "", description: "", position: "270:78", clickable: false, editable: false, checkable: false },
-{ class: "android.view.ViewGroup", id: "action_bar", text: "", description: "", position: "270:78", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.TextView", id: "", text: "teste", description: "", position: "57:77", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.FrameLayout", id: "content", text: "", description: "", position: "270:540", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.LinearLayout", id: "linear1", text: "", description: "", position: "270:540", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.EditText", id: "edit", text: "senha", description: "", position: "269:404", clickable: true, editable: true, checkable: false },
-{ class: "android.widget.Button", id: "btn", text: "PRESSIONE", description: "", position: "270:465", clickable: true, editable: false, checkable: false },
-{ class: "android.widget.TextView", id: "text", text: "Brasil é nosso 2026", description: "", position: "270:525", clickable: false, editable: false, checkable: false },
-{ class: "android.widget.CheckBox", id: "checkbox", text: "marcar", description: "", position: "269:574", clickable: true, editable: false, checkable: true },
-{ class: "android.widget.Switch", id: "switch1", text: "Switch", description: "", position: "270:623", clickable: true, editable: false, checkable: true },
-{ class: "android.widget.SeekBar", id: "seekbar1", text: "", description: "", position: "270:673", clickable: false, editable: false, checkable: false },
-{ class: "android.view.View", id: "statusBarBackground", text: "", description: "", position: "270:18", clickable: false, editable: false, checkable: false }];
+const defaultElements: AndroidElement[] = [];
 
 
 const getWidgetType = (className: string) => className.split(".").pop() || className;

@@ -204,7 +204,7 @@ const PackageCard = ({ packageName }: { packageName: string }) => {
   };
   return (
     <div className="mb-3 rounded-lg border bg-card px-4 py-3 shadow-sm flex items-center gap-2">
-      <p className="text-sm text-muted-foreground flex-1">Pacote app: <span className="font-semibold text-card-foreground">{packageName}</span></p>
+      <p className="text-sm text-muted-foreground flex-1 min-w-0">Pacote app: <span className="font-semibold text-card-foreground truncate inline-block max-w-[60%] align-bottom">{packageName}</span></p>
       <button onClick={() => console.log(`🔧 Usar@@ Pacote = ${packageName}`)} className="flex h-7 shrink-0 items-center px-3 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
         Usar
       </button>
